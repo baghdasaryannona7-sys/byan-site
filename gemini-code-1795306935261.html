@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>B.Yan — By Baghdasryan</title>
+  <style>
+    :root {
+      --navy: #14213d;
+      --olive: #4a573e;
+      --cream: #f8f5f0;
+      --white: #ffffff;
+      --text: #1f2421;
+      --muted: #6b7068;
+      --border: #e5dfd5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--cream);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: var(--navy);
+      color: var(--white);
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      letter-spacing: 4px;
+      font-weight: 600;
+    }
+
+    header p {
+      font-size: 0.95rem;
+      letter-spacing: 2px;
+      color: #d6cfc2;
+      margin-top: 6px;
+      text-transform: uppercase;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 1.5rem;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 35px;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 28px;
+    }
+
+    .product-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 6px 20px rgba(20, 33, 61, 0.05);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 360px;
+      background-color: #ece6dc;
+      object-fit: cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .product-info {
+      padding: 22px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .product-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+
+    .product-desc {
+      font-size: 0.92rem;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .product-price {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--olive);
+      margin-bottom: 16px;
+    }
+
+    .btn-order {
+      width: 100%;
+      padding: 13px;
+      background-color: var(--navy);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .btn-order:hover {
+      background-color: var(--olive);
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(20, 33, 61, 0.6);
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 1000;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--white);
+      width: 100%;
+      max-width: 440px;
+      border-radius: 16px;
+      padding: 26px;
+      position: relative;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 18px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--muted);
+    }
+
+    .modal h2 {
+      font-size: 1.3rem;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+
+    .selected-item-tag {
+      font-size: 0.9rem;
+      color: var(--olive);
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 500;
+      margin-bottom: 5px;
+      color: var(--navy);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-family: inherit;
+    }
+
+    .payment-notice {
+      background-color: var(--cream);
+      border-left: 3px solid var(--olive);
+      padding: 10px 12px;
+      font-size: 0.85rem;
+      color: var(--text);
+      border-radius: 6px;
+      margin-bottom: 16px;
+    }
+
+    .status-message {
+      margin-top: 12px;
+      font-size: 0.9rem;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 50px;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>B.YAN</h1>
+    <p>By Baghdasryan</p>
+  </header>
+
+  <main class="container">
+    <h2 class="section-title">Հավաքածու</h2>
+    <p class="section-subtitle">Ընտրեք նախընտրելի մոդելը և ձևակերպեք պատվերն առցանց</p>
+
+    <div class="products-grid">
+      <div class="product-card">
+        <img src="set1.jpg" alt="Սեթ N1" class="product-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+        <div class="product-image" style="display:none;">Սեթ N1 — Նկարը շուտով</div>
+
+        <div class="product-info">
+          <div>
+            <h3 class="product-title">Սեթ N1 (Անվանումը)</h3>
+            <p class="product-desc">Կտորը՝ արմանի տրիկոտաժ։ Հարմարավետ և էլեգանտ երկու կտորից բաղկացած սեթ։</p>
+            <div class="product-price">75000 Դրամ</div>
+          </div>
+          <button class="btn-order" onclick="openOrderModal('Սեթ N1 (Անվանումը)', '75000 Դրամ')">Պատվիրել</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="set2.jpg" alt="Սեթ N2" class="product-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+        <div class="product-image" style="display:none;">Սեթ N2 — Նկարը շուտով</div>
+
+        <div class="product-info">
+          <div>
+            <h3 class="product-title">Սեթ N2 (Անվանումը)</h3>
+            <p class="product-desc">Կտորը՝ արմանի տրիկոտաժ։ Բարձրորակ կար և նրբաճաշակ ձևվածք։</p>
+            <div class="product-price">85000 Դրամ</div>
+          </div>
+          <button class="btn-order" onclick="openOrderModal('Սեթ N2 (Անվանումը)', '85000 Դրամ')">Պատվիրել</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="modal-overlay" id="orderModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeOrderModal()">&times;</button>
+      <h2>Ձևակերպել պատվերը</h2>
+      <div class="selected-item-tag" id="modalProductLabel"></div>
+
+      <form id="orderForm">
+        <div class="form-group">
+          <label for="size">Չափս</label>
+          <select id="size" required>
+            <option value="">Ընտրեք չափսը</option>
+            <option value="XS">XS</option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="customerName">Անուն, Ազգանուն</label>
+          <input type="text" id="customerName" placeholder="Օրինակ՝ Անի Սարգսյան" required />
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Հեռախոսահամար (WhatsApp / Telegram / զանգի համար)</label>
+          <input type="tel" id="phone" placeholder="09X XX XX XX" required />
+        </div>
+
+        <div class="form-group">
+          <label for="address">Առաքման հասցե</label>
+          <textarea id="address" rows="2" placeholder="Քաղաք, փողոց, շենք, բնակարան" required></textarea>
+        </div>
+
+        <div class="payment-notice">
+          <strong>Վճարման կարգը․</strong> Պատվերներն ընդունվում են բացառապես <strong>փոխանցումով</strong>։ Պատվերը գրանցելուց հետո մենք կկապվենք Ձեզ հետ՝ հաստատման և փոխանցման տվյալներն ուղարկելու համար։
+        </div>
+
+        <button type="submit" class="btn-order" id="submitBtn">Հաստատել պատվերը</button>
+        <div class="status-message" id="statusMessage"></div>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2026 B.Yan — By Baghdasryan. Բոլոր իրավունքները պաշտպանված են։
+  </footer>
+
+  <script>
+    const BOT_TOKEN = "9050089210:AAEfB0T6nQBOQIhJj_rDdWPX_8hNRd90524";
+    const CHAT_ID = "6789543983";
+
+    let selectedProduct = "";
+    let selectedPrice = "";
+
+    function openOrderModal(productName, productPrice) {
+      selectedProduct = productName;
+      selectedPrice = productPrice;
+      document.getElementById("modalProductLabel").textContent = `${productName} — ${productPrice}`;
+      document.getElementById("statusMessage").textContent = "";
+      document.getElementById("orderModal").classList.add("active");
+    }
+
+    function closeOrderModal() {
+      document.getElementById("orderModal").classList.remove("active");
+    }
+
+    document.getElementById("orderForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const submitBtn = document.getElementById("submitBtn");
+      const statusMsg = document.getElementById("statusMessage");
+
+      const size = document.getElementById("size").value;
+      const name = document.getElementById("customerName").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const address = document.getElementById("address").value.trim();
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Ուղարկվում է...";
+
+      const message =
+        `🛍 Նոր պատվեր — B.Yan\n\n` +
+        `👗 Մոդել․ ${selectedProduct}\n` +
+        `💰 Գին․ ${selectedPrice}\n` +
+        `📏 Չափս․ ${size}\n` +
+        `👤 Հաճախորդ․ ${name}\n` +
+        `📞 Հեռախոս․ ${phone}\n` +
+        `📍 Հասցե․ ${address}\n` +
+        `💳 Վճարում․ Միայն փոխանցումով`;
+
+      try {
+        const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: CHAT_ID,
+            text: message
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.ok) {
+          statusMsg.style.color = "#4a573e";
+          statusMsg.textContent = "Շնորհակալություն, Ձեր պատվերն ընդունված է։ Մենք շուտով կկապվենք Ձեզ հետ։";
+          document.getElementById("orderForm").reset();
+          setTimeout(() => {
+            closeOrderModal();
+          }, 2500);
+        } else {
+          throw new Error("Telegram API error");
+        }
+      } catch (error) {
+        statusMsg.style.color = "#b00020";
+        statusMsg.textContent = "Սխալ տեղի ունեցավ։ Խնդրում ենք փորձել կրկին կամ գրել մեզ Instagram-ում։";
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Հաստատել պատվերը";
+      }
+    });
+  </script>
+
+</body>
+</html>
